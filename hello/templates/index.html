@@ -14,7 +14,6 @@
 </div>
 <div class="container">
   <hr>
-	<script src="http://maps.googleapis.com/maps/api/js"></script>
 	<div id="googleMap" style="width:1200px;height:700px;"></div>
 	<script>
 		/* Represents the Map object */
@@ -41,7 +40,7 @@
 			/* Add a custom marker on the map */
 			busMarker = new google.maps.Marker({
 				position: busLocation,
-				icon: './bus_18_2x.png',
+				icon: "{% static 'bus_18_2x.png'%}",
 				map: map
 			});
 
