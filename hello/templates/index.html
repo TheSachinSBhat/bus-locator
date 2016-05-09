@@ -52,7 +52,7 @@
 		/* Update the location of the Bus Marker */
 		window.setInterval(function () {
 			debugger;
-			/// call your function here
+			/* call your function here */
 			busLocation = getNewCoordinate(busLocation, -10, 0);
 			busMarker.setPosition(busLocation);
 			google.maps.event.trigger(map, 'resize');
@@ -60,25 +60,25 @@
 
 		function getNewCoordinate(position, northOffset, eastOffset) {
 
-			//Position, decimal degrees
+			/* Position, decimal degrees */
 			var latitude = position.lat();
 			var longitude = position.lng();
 
-			//Earth’s radius, sphere
+			/* Earth’s radius, sphere */
 			R = 6378137
 
-			// PI Value
+			/* PI Value */
 			PI = 3.14159265
 
-			//offsets in meters
+			/* offsets in meters */
 			dn = northOffset
 			de = eastOffset
 
-			//Coordinate offsets in radians
+			/* Coordinate offsets in radians */
 			dLat = dn / R
 			dLon = de / (R * Math.cos(PI * latitude / 180))
 
-			//OffsetPosition, decimal degrees
+			/* OffsetPosition, decimal degrees */
 			newlatitude = latitude + dLat * 180 / PI
 			newlongitude = longitude + dLon * 180 / PI
 
