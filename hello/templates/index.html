@@ -60,17 +60,17 @@
 		google.maps.event.addDomListener(window, 'load', initialize);
 
 		/* Update the location of the Bus Marker */
-		window.setInterval(function () {
-			debugger;
-			/* Get Bus Location Co-ordinates */
-			busLocation = getNewCoordinate(busLocation, -10, 0);
-			busMarker.setPosition(busLocation);
+		//window.setInterval(function () {
+		//	debugger;
+		//	/* Get Bus Location Co-ordinates */
+		//	busLocation = getNewCoordinate(busLocation, -10, 0);
+		//	busMarker.setPosition(busLocation);
 
-			/* Get User Location Co-ordinates */
-			getUserLocation();
+		//	/* Get User Location Co-ordinates */
+		//	getUserLocation();
 
-			google.maps.event.trigger(map, 'resize');
-		}, 1000);
+		//	google.maps.event.trigger(map, 'resize');
+		//}, 1000);
 
 
 		/* Method that returns location co-ordinates of the user */
@@ -92,6 +92,10 @@
 			document.getElementById('startLon').innerHTML = pos.coords.longitude;
 
 			// TODO: Update user location on map
+			busLocation = pos;
+			busMarker.setPosition(busLocation);
+
+			google.maps.event.trigger(map, 'resize');
 		}
 
 		/***** Generic Functions *****/
