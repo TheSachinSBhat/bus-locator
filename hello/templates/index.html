@@ -14,6 +14,13 @@
 </div>
 <div class="container">
   <hr>
+    <div>
+        <label>User Location</label>
+        <div id="user-location-div">
+            <div id="startLat"></div>
+            <div id="startLon"></div>
+        </div>
+    </div>
 	<div id="googleMap" style="width:1200px;height:600px;"></div>
 	<script>
 		/* Represents the Map object */
@@ -23,6 +30,9 @@
 		var busMarker;
 
 		var busLocation = new google.maps.LatLng(18.52592091234, 73.82753751221);
+
+		/* Represents the user location */
+		var USER_LOCATION;
 
 		/* Method that initializes the Map Object */
 		function initialize() {
@@ -44,20 +54,61 @@
 				map: map
 			});
 
+			/* Monitor User Location */
+			getUserLocation();
 		}
 
 		/* Event listener for Window Load event */
 		google.maps.event.addDomListener(window, 'load', initialize);
 
 		/* Update the location of the Bus Marker */
-		window.setInterval(function () {
-			debugger;
-			/* call your function here */
-			busLocation = getNewCoordinate(busLocation, -10, 0);
-			busMarker.setPosition(busLocation);
-			google.maps.event.trigger(map, 'resize');
-		}, 1000);
+		//window.setInterval(function () {
+		//	debugger;
+		//	/* Get Bus Location Co-ordinates */
+		//	busLocation = getNewCoordinate(busLocation, -10, 0);
+		//	busMarker.setPosition(busLocation);
 
+		//	/* Get User Location Co-ordinates */
+		//	getUserLocation();
+
+		//	google.maps.event.trigger(map, 'resize');
+		//}, 1000);
+
+
+		/* Method that returns location co-ordinates of the user */
+		function getUserLocation() {
+			options = {
+				enableHighAccuracy: false,
+				timeout: 5000,
+				maximumAge: 0
+			};
+
+
+			// Reference: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
+			id = navigator.geolocation.watchPosition(updateUserLocation, error, options);
+		}
+
+		/* Method that updates the user's current location */
+		function updateUserLocation(pos) {
+			document.getElementById('startLat').innerHTML = pos.coords.latitude;
+			document.getElementById('startLon').innerHTML = pos.coords.longitude;
+
+			// TODO: Update user location on map
+			busLocation = pos;
+			busMarker.setPosition(busLocation);
+
+			google.maps.event.trigger(map, 'resize');
+		}
+
+		/***** Generic Functions *****/
+
+		var id, target, options;
+
+		function error(err) {
+			console.warn('ERROR(' + err.code + '): ' + err.message);
+		}
+
+		/* Method that returns new co-ordinates based on the north and east offsets passed */
 		function getNewCoordinate(position, northOffset, eastOffset) {
 
 			/* Position, decimal degrees */
