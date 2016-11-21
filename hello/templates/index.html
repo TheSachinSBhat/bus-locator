@@ -75,50 +75,32 @@
 
 		/* Method that returns location co-ordinates of the user */
 		function getUserLocation() {
-			getLocation();
+			options = {
+				enableHighAccuracy: false,
+				timeout: 5000,
+				maximumAge: 0
+			};
+
+
+			// Reference: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
+			id = navigator.geolocation.watchPosition(updateUserLocation, error, options);
 		}
 
 		/* Method that updates the user's current location */
-		function updateUserLocation() {
-			document.getElementById('startLat').innerHTML = USER_LOCATION.lat();
-			document.getElementById('startLon').innerHTML = USER_LOCATION.lng();
+		function updateUserLocation(pos) {
+			document.getElementById('startLat').innerHTML = pos.coords.latitude;
+			document.getElementById('startLon').innerHTML = pos.coords.longitude;
 
 			// TODO: Update user location on map
 		}
 
 		/***** Generic Functions *****/
 
-		/* Get the current location using HTML5 Geolocation */
-		/* Reference: http://www.w3schools.com/html/html5_geolocation.asp */
-		function getLocation() {
-			if (navigator.geolocation) {
-				//navigator.geolocation.getCurrentPosition(showPosition);
-				navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
-			} else {
-				userLocationDiv.val("Geolocation is not supported by this browser.");
-			}
+		var id, target, options;
+
+		function error(err) {
+			console.warn('ERROR(' + err.code + '): ' + err.message);
 		}
-
-		var geoOptions = {
-			timeout: 10 * 1000
-		}
-
-		var geoSuccess = function (position) {
-			startPos = position;
-
-			/* Update user's location */
-			USER_LOCATION = new google.maps.LatLng(startPos.coords.latitude, startPos.coords.longitude);
-			updateUserLocation();
-		};
-
-		var geoError = function (error) {
-			console.log('Error occurred. Error code: ' + error.code);
-			// error.code can be:
-			//   0: unknown error
-			//   1: permission denied
-			//   2: position unavailable (error response from location provider)
-			//   3: timed out
-		};
 
 		/* Method that returns new co-ordinates based on the north and east offsets passed */
 		function getNewCoordinate(position, northOffset, eastOffset) {
