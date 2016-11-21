@@ -94,7 +94,7 @@
 			document.getElementById('startLon').innerHTML = pos.coords.longitude;
 
 			// TODO: Update user location on map
-			busLocation = pos;
+			busLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 			busMarker.setPosition(busLocation);
 
 			google.maps.event.trigger(map, 'resize');
