@@ -31,6 +31,9 @@
 
 		var busLocation = new google.maps.LatLng(18.52592091234, 73.82753751221);
 
+		/* Represents the user location */
+		var USER_LOCATION;
+
 		/* Method that initializes the Map Object */
 		function initialize() {
 			debugger;
@@ -75,6 +78,14 @@
 			getLocation();
 		}
 
+		/* Method that updates the user's current location */
+		function updateUserLocation() {
+			document.getElementById('startLat').innerHTML = USER_LOCATION.coords.latitude;
+			document.getElementById('startLon').innerHTML = USER_LOCATION.coords.longitude;
+
+			// TODO: Update user location on map
+		}
+
 		/***** Generic Functions *****/
 
 		/* Get the current location using HTML5 Geolocation */
@@ -94,14 +105,10 @@
 
 		var geoSuccess = function (position) {
 			startPos = position;
-			document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-			document.getElementById('startLon').innerHTML = startPos.coords.longitude;
 
 			/* Update user's location */
 			USER_LOCATION = new google.maps.LatLng(startPos.coords.latitude, startPos.coords.longitude);
-
-			/* Display the user's location on Map */
-			displayUserLocationOnMap();
+			updateUserLocation();
 		};
 
 		var geoError = function (error) {
