@@ -14,6 +14,13 @@
 </div>
 <div class="container">
   <hr>
+    <div>
+        <label>User Location</label>
+        <div id="user-location-div">
+            <div id="startLat"></div>
+            <div id="startLon"></div>
+        </div>
+    </div>
 	<div id="googleMap" style="width:1200px;height:600px;"></div>
 	<script>
 		/* Represents the Map object */
@@ -52,12 +59,61 @@
 		/* Update the location of the Bus Marker */
 		window.setInterval(function () {
 			debugger;
-			/* call your function here */
+			/* Get Bus Location Co-ordinates */
 			busLocation = getNewCoordinate(busLocation, -10, 0);
 			busMarker.setPosition(busLocation);
+
+			/* Get User Location Co-ordinates */
+			getUserLocation();
+
 			google.maps.event.trigger(map, 'resize');
 		}, 1000);
 
+
+		/* Method that returns location co-ordinates of the user */
+		function getUserLocation() {
+			getLocation();
+		}
+
+		/***** Generic Functions *****/
+
+		/* Get the current location using HTML5 Geolocation */
+		/* Reference: http://www.w3schools.com/html/html5_geolocation.asp */
+		function getLocation() {
+			if (navigator.geolocation) {
+				//navigator.geolocation.getCurrentPosition(showPosition);
+				navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+			} else {
+				userLocationDiv.val("Geolocation is not supported by this browser.");
+			}
+		}
+
+		var geoOptions = {
+			timeout: 10 * 1000
+		}
+
+		var geoSuccess = function (position) {
+			startPos = position;
+			document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+			document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+
+			/* Update user's location */
+			USER_LOCATION = new google.maps.LatLng(startPos.coords.latitude, startPos.coords.longitude);
+
+			/* Display the user's location on Map */
+			displayUserLocationOnMap();
+		};
+
+		var geoError = function (error) {
+			console.log('Error occurred. Error code: ' + error.code);
+			// error.code can be:
+			//   0: unknown error
+			//   1: permission denied
+			//   2: position unavailable (error response from location provider)
+			//   3: timed out
+		};
+
+		/* Method that returns new co-ordinates based on the north and east offsets passed */
 		function getNewCoordinate(position, northOffset, eastOffset) {
 
 			/* Position, decimal degrees */
