@@ -80,8 +80,8 @@
 
 		/* Method that updates the user's current location */
 		function updateUserLocation() {
-			document.getElementById('startLat').innerHTML = USER_LOCATION.coords.latitude;
-			document.getElementById('startLon').innerHTML = USER_LOCATION.coords.longitude;
+			document.getElementById('startLat').innerHTML = USER_LOCATION.lat();
+			document.getElementById('startLon').innerHTML = USER_LOCATION.lng();
 
 			// TODO: Update user location on map
 		}
