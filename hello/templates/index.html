@@ -31,6 +31,8 @@
 
 		var busLocation = new google.maps.LatLng(18.52592091234, 73.82753751221);
 
+		var busRouteCoordinates = [];
+
 		/* Represents the user location */
 		var USER_LOCATION;
 
@@ -44,7 +46,7 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
-
+			// Create a map object
 			map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
 			/* Add a custom marker on the map */
@@ -53,6 +55,15 @@
 				icon: "{% static 'bus_18_2x.png'%}",
 				map: map
 			});
+
+			// Reference: https://developers.google.com/maps/documentation/javascript/examples/polyline-complex
+			// Create a new polyline which would display the route of the bus
+			busRoutePolyline = new google.maps.Polyline({
+				strokeColor: '#000000',
+				strokeOpacity: 1.0,
+				strokeWeight: 3
+			});
+			busRoutePolyline.setMap(map);
 
 			/* Monitor User Location */
 			getUserLocation();
@@ -101,6 +112,15 @@
 			google.maps.event.trigger(map, 'resize');
 			// Re-center map to the current bus location
 			map.setCenter(busLocation);
+
+			// Get the path of the bus from the polyline
+			var busPath = busRoutePolyline.getPath();
+
+			// Because path is an MVCArray, we can simply append a new coordinate
+			// and it will automatically appear.
+			// Append the current bus location to the bus path
+			busPath.push(busLocation);
+
 		}
 
 		/***** Generic Functions *****/
