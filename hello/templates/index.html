@@ -99,7 +99,8 @@
 
 			var currCenter = map.getCenter();
 			google.maps.event.trigger(map, 'resize');
-			map.setCenter(currCenter);
+			// Re-center map to the current bus location
+			map.setCenter(busLocation);
 		}
 
 		/***** Generic Functions *****/
