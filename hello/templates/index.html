@@ -97,7 +97,9 @@
 			busLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 			busMarker.setPosition(busLocation);
 
+			var currCenter = map.getCenter();
 			google.maps.event.trigger(map, 'resize');
+			map.setCenter(currCenter);
 		}
 
 		/***** Generic Functions *****/
